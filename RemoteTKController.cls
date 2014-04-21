@@ -93,8 +93,12 @@ public class RemoteTKController {
         if (targetType == null) {
             return makeError('The requested resource does not exist', 'NOT_FOUND');
         }
+
+        Map<String, Object> result = new Map<String, Object>();
         
         Schema.DescribeSObjectResult sobjResult = targetType.getDescribe();
+        result.put('label', sobjResult.getLabel());
+        result.put('labelPlural', sobjResult.getLabelPlural());
         
         Map<String, Schema.SObjectField> fieldMap = sobjResult.fields.getMap();
         
@@ -117,7 +121,6 @@ public class RemoteTKController {
             fields.add(field);
         }
         
-        Map<String, Object> result = new Map<String, Object>();
         result.put('fields', fields);
         
         return JSON.serialize(result);
